@@ -1,3 +1,4 @@
-script.spec
+*.spec
 /venv
 /build
+*.srt
