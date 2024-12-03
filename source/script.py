@@ -3,6 +3,7 @@ from os.path import isfile, join
 from translators import translate_text
 from re import sub
 from tqdm import tqdm
+from time import sleep
 
 
 def translate(text):
@@ -15,7 +16,7 @@ def translate(text):
             counter = i + 9000 
             while text[counter] != '\n' and text[counter+1] != '\n':
                 counter += 1
-            tmp += translate_text(text[a:counter+1], translator='yandex', from_language='fr', to_language='en') + '\n\n'
+            tmp += translate_text(text[a:counter+1], translator='yandex', from_language='en', to_language='ru') + '\n\n'
             a = counter + 1
     except IndexError:
         tmp += translate_text(text[a:], translator='yandex', from_language='en', to_language='ru')
@@ -35,13 +36,14 @@ def main():
                         text = file.read()
 
                     text = translate(text)
-
                     with open(file_path[:-4] + '_русский' + '.srt', 'w', encoding='utf8') as file:
                         file.write(text)
                 except Exception as err:
                     print(f"Ошибка при открытии файла {filename}: {err}")
+                    sleep(2)
             elif not filename.endswith('.exe') and not filename.endswith('.txt') and not filename.endswith('.md'):
                 print(filename, 'Некорректное расширение файла (должно быть ____.srt)')
+                sleep(2)
 
 if __name__ == '__main__':
     main()
